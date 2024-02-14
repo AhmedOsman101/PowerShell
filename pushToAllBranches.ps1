@@ -1,24 +1,48 @@
-# Array of user branches
-$userBranches = @("3ra2y", "Enas", "Sofy", "Waleed")
-# $userBranches = @("3ra2y", "Enas", "Sofy", "Othman")
+# Switch to the main branch
+git checkout main
 
-# Loop over each user branch
-foreach ($userBranch in $userBranches) {
-    # Switch to the main branch
-    git checkout main
+# commit & sync all changes before execution
 
-    # Pull changes from the remote main branch
-    git pull origin main
+# stage all changes
+git add .
 
-    # Switch to the user branch
-    git checkout $userBranch
+# commit all changes to git
+git commit -m "commit changes via PS script"
 
-    # Merge changes from the main branch into the user branch (if needed)
-    git merge main
+# sync/push all changes to github
+git push -u origin main
 
-    # Push the changes to GitHub
-    git push origin $userBranch
+# Pull changes from the remote main branch
+git pull origin main
+
+$hasBranches = Read-Host -Prompt "Do you have branches? (y/n)"
+
+if ($hasBranches -eq "y" -or $hasBranches -eq "Y") {
+    # Array of user branches
+    $userBranches = git branch -a
+    # $userBranches = @("3ra2y", "Enas", "Sofy", "Othman")
+    
+    # Loop over each user branch
+    foreach ($userBranch in $userBranches) {
+
+        # Switch to the main branch
+        git checkout main
+
+        # Switch to the user branch
+        git checkout $userBranch
+
+        # Merge changes from the main branch into the user branch (if needed)
+        git merge main
+
+        # Push the changes to GitHub
+        git push origin $userBranch
+    }
 }
-
+elseif ($hasBranches -eq "n" -or $hasBranches -eq "N") {
+    Write-Host "No branches found"
+}
+else {
+    Write-Host "Invalid input"
+}
 # Switch to the main branch
 git checkout main

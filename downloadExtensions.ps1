@@ -1,6 +1,10 @@
 # Parse the extensions.json file to get the list of extensions
 $extensions = (Get-Content -Path .\extensions.json | ConvertFrom-Json).recommendations
 
+if (-not (Test-Path ".\extensions")) {
+  mkdir ".\extensions"
+}
+
 # Loop through each extension and download the .vsix file
 foreach ($extension in $extensions) {
   # Construct the download URL
@@ -17,7 +21,12 @@ foreach ($extension in $extensions) {
   }
   else {
     # Download the .vsix file
-    Invoke-WebRequest -Uri $url -OutFile ".\extensions\$filename"
-    Write-Host "Downloaded $filename"
+    try {
+      Invoke-WebRequest -Uri $url -OutFile ".\extensions\$filename"
+      Write-Host "Downloaded $filename"
+    }
+    catch {
+      Write-Host "Failed to download $filename"
+    }
   }
 }

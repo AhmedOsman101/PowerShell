@@ -4,8 +4,13 @@ $repoUrl = Read-Host -Prompt 'Enter the repo URL '
 # remove the '.git' at the end
 $repoUrl = $repoUrl -replace '.git$', ''
 
-# Ask the user for the git command
-$cloneCommand = "git clone $repoUrl"
+# Check if the user wants to use GitHub CLI or git
+if ($args -contains '-gh') {
+    $cloneCommand = "gh repo clone $repoUrl"
+}
+elseif ($args -contains '-git' -or $args.Count -eq 0) {
+    $cloneCommand = "git clone $repoUrl"
+}
 
 # Get the folder name and replace invalid characters with underscores
 $folderName = $repoUrl -split '/' | Select-Object -Last 1

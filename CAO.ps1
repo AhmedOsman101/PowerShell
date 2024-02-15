@@ -1,51 +1,66 @@
-# Get the repo URL
-$repoUrl = Read-Host -Prompt 'Enter the repo URL '
+# Set ErrorActionPreference to Stop to make all errors terminating
+$ErrorActionPreference = 'Stop'
 
-# remove the '.git' at the end
-$repoUrl = $repoUrl -replace '.git$', ''
+# Get the repo URL and remove the '.git' at the end
+$repoUrl = (Read-Host -Prompt 'Enter the repo URL ') -replace '.git$', ''
 
 # Check if the user wants to use GitHub CLI or git
-if ($args -contains '-gh') {
-    $cloneCommand = "gh repo clone $repoUrl"
-}
-elseif ($args -contains '-git' -or $args.Count -eq 0) {
-    $cloneCommand = "git clone $repoUrl"
-}
+# Determine the clone command based on the arguments
+$cloneCommand = if ($args -contains '-gh') { "gh repo clone $repoUrl" } 
+else { "git clone $repoUrl" }
+
 
 # Get the folder name and replace invalid characters with underscores
-$folderName = $repoUrl -split '/' | Select-Object -Last 1
-$folderName = $folderName -replace '[^a-zA-Z0-9]', '_'
+$folderName = ($repoUrl -split '/' | Select-Object -Last 1) -replace '[^a-zA-Z0-9]', '_'
 
-if ($args -contains '-php') {
-    # path to XAMPP
-    $path = "F:\Apps\xampp\htdocs"
-    # print out the website url
-    Write-Output "http://localhost/$folderName/"
-}
-# Check if the user wants to use the current directory
-elseif ($args -contains '.') {
-    # Using Get-Location cmdlet
-    $workingDirectory = Get-Location
-    $path = "$workingDirectory\$folderName"
-}
-# Check if the user wants to change the path
-else {
-    # Check if they need to change the path
-    $path = Read-Host -Prompt 'Enter the path '
+# Define a function for cloning the repository
+function Start-Clone {
+    param($path)
+    try {
+        Set-Location -Path $path
+        Invoke-Expression "$cloneCommand $folderName"
+        Set-Location -Path "$path\$folderName"
+    }
+    catch {
+        Write-Host "Git Error: $_" -ForegroundColor Red
+        return
+    }
 }
 
-# Change directory to htdocs
-Set-Location -Path $path
+try {
+    if ($args -contains '-php') {
+        # path to XAMPP
+        $path = "F:\Apps\xampp\htdocs"
 
-# Run the first command
-Invoke-Expression "$cloneCommand $folderName"
+        # clone the repository
+        Start-Clone $path
 
-# Change directory
-Set-Location -Path "$path\$folderName"
+        # print out the URL
+        Write-Output "http://localhost/$folderName/" -ForegroundColor DarkGreen
+    }
+    # Check if the user wants to use the current directory
+    elseif ($args -contains '.') {
 
-# Open in VS Code
-Invoke-Expression "code ."
+        # Run the git clone command with its own try/catch block
+        Invoke-Expression "$cloneCommand $folderName"
+    }
+    # Check if the user wants to change the path
+    else {
+        # read the path from the user and resolve it
+        $path = Resolve-Path -Path (Read-Host -Prompt 'Enter the path ')
+        
+        # Display the resolved path
+        Write-Host "Cloning into '$path'..." -ForegroundColor DarkGreen
 
-# Go back to the parent directory
-Set-Location -Path $path
+        # clone the repository
+        Start-Clone $path
 
+    }
+
+    # Open in VS Code
+    Invoke-Expression "code ."
+
+}
+catch {
+    Write-Host "Error: $_" -ForegroundColor Red 
+}

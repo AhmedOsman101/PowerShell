@@ -26,25 +26,21 @@ else {
 $folderName = $repoUrl -split '/' | Select-Object -Last 1
 $folderName = $folderName -replace '[^a-zA-Z0-9]', '_'
 
-if ($lang -eq 'php') {
+if ($args -contains '-php') {
     $path = "F:\Apps\xampp\htdocs"
     # print out the website url
     Write-Output "http://localhost/$folderName/"
 }
+# Check if the user wants to use the current directory
+elseif ($args -contains '.') {
+    # Using Get-Location cmdlet
+    $workingDirectory = Get-Location
+    $path = "$workingDirectory\$folderName"
+}
+# Check if the user wants to change the path
 else {
     # Check if they need to change the path
-    $response = Read-Host -Prompt 'Do you want to change the path? (y/n) '
-    if ($response -eq 'y' -or $response -eq 'Y') {
-        # Ask the user for the path
-        $path = Read-Host -Prompt 'Enter the path '
-    }
-    elseif ($response -eq 'n' -or $response -eq 'N') {
-        $path = "F:\books and assignments\IT\3rd year"
-    }
-    else {
-        Write-Host "Invalid response. Please enter 'y' or 'n'."
-        return
-    }
+    $path = Read-Host -Prompt 'Enter the path '
 }
 
 # Change directory to htdocs
@@ -61,3 +57,4 @@ Invoke-Expression "code ."
 
 # Go back to the parent directory
 Set-Location -Path $path
+

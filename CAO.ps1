@@ -47,7 +47,9 @@ try {
     # Check if the user wants to change the path
     else {
         # read the path from the user and resolve it
-        $path = Resolve-Path -Path (Read-Host -Prompt 'Enter the path ')
+        $customFolderName = (Read-Host -Prompt 'Enter the path ')
+        mkdir $customFolderName
+        $path = Resolve-Path -Path $customFolderName
         
         # Display the resolved path
         Write-Host "Cloning into '$path'..." -ForegroundColor DarkGreen

@@ -32,10 +32,10 @@ if ($args -contains '-b') {
             # Push the changes to GitHub
             try {
                 git push origin $userBranch
-                Write-Host "Changes pushed to $userBranch on GitHub."
+                Write-Host "Changes pushed to $userBranch on GitHub." -ForegroundColor DarkCyan
             }
             catch {
-                Write-Host "Error pushing changes to $userBranch on GitHub: $_"
+                Write-Host "Error pushing changes to $userBranch on GitHub: $_" -ForegroundColor DarkRed
             }
         }
     }
@@ -44,4 +44,4 @@ if ($args -contains '-b') {
 # Switch to the main branch
 git checkout main
 
-Write-Host "Done!" -ForegroundColor DarkGreen
+Write-Host "Done!" -ForegroundColor DarkCyan

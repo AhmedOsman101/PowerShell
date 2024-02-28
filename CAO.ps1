@@ -43,6 +43,7 @@ try {
 
         # Run the git clone command with its own try/catch block
         Invoke-Expression "$cloneCommand $folderName"
+        Set-Location -Path "$folderName"
     }
     # Check if the user wants to change the path
     else {

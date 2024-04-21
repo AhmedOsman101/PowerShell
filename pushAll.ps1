@@ -42,7 +42,7 @@ if ($args -contains '-b') {
             }
         }
     }
-}else
+}
 
 # Switch to the main branch
 git checkout main

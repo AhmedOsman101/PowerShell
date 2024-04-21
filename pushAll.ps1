@@ -13,7 +13,7 @@ git commit -m "Auto Commit Via Power Shell Script"
 git push -u origin main
 
 # message to the user
-Write-Host "Changes pushed to $userBranch on GitHub." -ForegroundColor DarkGreen
+Write-Host "Changes pushed to Main branch on GitHub." -ForegroundColor DarkGreen
 
 # Pull changes from the remote main branch
 git pull origin main

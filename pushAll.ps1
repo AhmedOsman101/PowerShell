@@ -7,7 +7,7 @@ git checkout main
 git add .
 
 # commit all changes to git
-git commit -m "commit changes via PS script"
+git commit -m "Auto Commit Via Power Shell Script"
 
 # sync/push all changes to github
 git push -u origin main

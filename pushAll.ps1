@@ -4,13 +4,16 @@ git checkout main
 # commit & sync all changes before execution
 
 # stage all changes
-git add .
+git add *
 
 # commit all changes to git
 git commit -m "Auto Commit Via Power Shell Script"
 
 # sync/push all changes to github
 git push -u origin main
+
+# message to the user
+Write-Host "Changes pushed to $userBranch on GitHub." -ForegroundColor DarkGreen
 
 # Pull changes from the remote main branch
 git pull origin main
@@ -39,9 +42,10 @@ if ($args -contains '-b') {
             }
         }
     }
-}
+}else
 
 # Switch to the main branch
 git checkout main
 
 Write-Host "Done!" -ForegroundColor DarkGreen
+

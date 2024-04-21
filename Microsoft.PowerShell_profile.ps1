@@ -1,5 +1,6 @@
- // hello 
- Function Artisan {
+# C:\Users\<User>\Documents\PowerShell\Microsoft.PowerShell_profile.ps1
+
+Function Artisan {
     Invoke-Expression "php artisan $args"
 }
 

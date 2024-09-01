@@ -6,12 +6,12 @@ $repoUrl = (Read-Host -Prompt 'Enter the repo URL ') -replace '.git$', ''
 
 # Check if the user wants to use GitHub CLI or git
 # Determine the clone command based on the arguments
-$cloneCommand = if ($args -contains '-gh') { "gh repo clone $repoUrl" } 
+$cloneCommand = if ($args -contains '-gh') { "gh repo clone $repoUrl" }
 else { "git clone $repoUrl" }
 
 
 # Get the folder name and replace invalid characters with underscores
-$folderName = ($repoUrl -split '/' | Select-Object -Last 1) -replace '[^a-zA-Z0-9]', '_'
+$folderName = ($repoUrl -split '/' | Select-Object -Last 1)
 
 # Define a function for cloning the repository
 function Start-Clone {
@@ -51,7 +51,7 @@ try {
         $customFolderName = (Read-Host -Prompt 'Enter the path ')
         mkdir $customFolderName
         $path = Resolve-Path -Path $customFolderName
-        
+
         # Display the resolved path
         Write-Host "Cloning into '$path'..." -ForegroundColor DarkGreen
 
@@ -65,5 +65,5 @@ try {
 
 }
 catch {
-    Write-Host "Error: $_" -ForegroundColor Red 
+    Write-Host "Error: $_" -ForegroundColor Red
 }

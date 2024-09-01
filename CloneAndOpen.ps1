@@ -28,18 +28,8 @@ function Start-Clone {
 }
 
 try {
-    if ($args -contains '-php') {
-        # path to XAMPP
-        $path = "F:\Apps\xampp\htdocs"
-
-        # clone the repository
-        Start-Clone $path
-
-        # print out the URL
-        Write-Output "http://localhost/$folderName/" -ForegroundColor DarkGreen
-    }
     # Check if the user wants to use the current directory
-    elseif ($args -contains '.') {
+    if ($args -contains '.') {
 
         # Run the git clone command with its own try/catch block
         Invoke-Expression "$cloneCommand $folderName"
@@ -57,7 +47,6 @@ try {
 
         # clone the repository
         Start-Clone $path
-
     }
 
     # Open in VS Code

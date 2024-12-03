@@ -6,11 +6,9 @@ $extensionsFormatted = $extensions -join '","'
 
 # Create the JSON content
 $jsonContent = @"
-{
-  "recommendations": [
-    "$extensionsFormatted"
-  ]
-}
+[
+  "$extensionsFormatted"
+]
 "@
 
 # Check if the file already exists

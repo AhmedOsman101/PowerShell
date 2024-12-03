@@ -1,5 +1,5 @@
 # Parse the extensions.json file to get the list of extensions
-$extensions = (Get-Content -Path .\extensions.json | ConvertFrom-Json).recommendations
+$extensions = (Get-Content -Path .\extensions.json | ConvertFrom-Json)
 
 if (-not (Test-Path ".\extensions")) {
   mkdir ".\extensions"
